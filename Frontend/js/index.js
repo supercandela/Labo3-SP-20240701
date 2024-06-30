@@ -41,6 +41,9 @@ const spinnerContenedor = document.getElementById("spinnerContenedor");
 const tablaContenedor = document.getElementById("tabla");
 const checkMostrar = document.getElementById("checkParaMostrar");
 
+const tipoFiltro = document.getElementById("tipoFiltro");
+let valorAFiltrar = tipoFiltro.value;
+
 // ------>  Event Listeners
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -70,6 +73,9 @@ btnSubmit.addEventListener("keydown", (e) => {
     guardarElemento(e);
   }
 });
+
+// Evento Change filtro
+tipoFiltro.addEventListener("change", displayTabla);
 
 // ------>  Funciones
 
@@ -120,8 +126,11 @@ function displayTabla() {
   if (tablaContenedor.hasChildNodes()) {
     borrarTabla();
   }
-
-  const tabla = crearTabla(listado);
+  const listaAMostrar =
+    tipoFiltro.value === ""
+      ? listado
+      : listado.filter((elemento) => elemento.tipo === tipoFiltro.value);
+  const tabla = crearTabla(listaAMostrar);
   tablaContenedor.appendChild(tabla);
 }
 
@@ -352,3 +361,5 @@ async function onEliminarTodos(e) {
     ocultarSpinner();
   }
 }
+
+// Map - Reduce - Filter

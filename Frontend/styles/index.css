@@ -213,6 +213,14 @@ section.lista div.spinner {
   background-color: #d1e8f5;
 }
 
+/* SECCION FILTRO */
+#filtro {
+  background-color: #d1e8f5;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 /* SECCION MOSTRAR OCULTAR COLUMNAS */
 #casilleros {
   background-color: #d1e8f5;

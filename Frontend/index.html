@@ -164,6 +164,27 @@
 
       <section class="lista">
 
+        <div id="filtro">
+          <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6 offset-lg-2 offset-md-1">
+              <label for="tipoFiltro" class="form-label">Filtrar Planetas por tipo:</label>
+              <select class="form-select" aria-label="Filtro por tipo de planeta" name="tipoFiltro" id="tipoFiltro">
+                <option value="" selected>Sin filtro</option>
+                <option value="rocoso">Rocoso</option>
+                <option value="gaseoso">Gaseoso</option>
+                <option value="helado">Helado</option>
+                <option value="enano">Enano</option>
+              </select>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 offset-lg-1 offset-md-1">
+              <label for="promedio" class="form-label">Promedio de distancia al Sol:</label>
+              <input class="form-control" aria-describedby="distancia promedio" name="promedio" id="promedio" type="number">
+            </div>
+
+          </div>
+        </div>
+
         <div id="casilleros">
           <h5>Seleccione los casilleros para mostrar/ocultar las columnas</h5>
           <div id="checkParaMostrar">
