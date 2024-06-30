@@ -201,16 +201,46 @@ section.lista div.spinner {
   /* border: 1px solid #ddd; */
   text-align: center;
   font-size: 16px;
+  text-transform: capitalize;
 }
 
 .responsiveTable th {
   background-color: #92c9e6;
   color: #ffffff;
-  text-transform: capitalize;
 }
 
 .responsiveTable tbody tr:nth-child(even) {
   background-color: #d1e8f5;
+}
+
+/* SECCION MOSTRAR OCULTAR COLUMNAS */
+#casilleros {
+  background-color: #d1e8f5;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#casilleros > h5 {
+  line-height: 2rem;
+}
+#checkParaMostrar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#checkParaMostrar > div {
+  margin: 0 20px;
+}
+
+#checkParaMostrar > div > label {
+  text-transform: capitalize;
+}
+
+#checkParaMostrar > div > label > input {
+  margin-left: 10px;
 }
 
 /* --------- MEDIA QUERIES ---------- */
@@ -232,6 +262,7 @@ section.lista div.spinner {
     padding-left: 50%;
     text-align: left;
     position: relative;
+    text-transform: capitalize;
   }
   .responsiveTable td::before {
     content: attr(data-label);

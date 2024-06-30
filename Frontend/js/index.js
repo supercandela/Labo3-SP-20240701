@@ -1,10 +1,23 @@
 import Planeta from "./Planeta.js";
-import { obtenerTodos, crearUno, editarUno, borrarUno, obtenerUno, borrarTodos, obtenerTodosFetch, crearUnoFetch, editarUnoFetch, borrarUnoFetch, obtenerUnoFetch } from "./api.js";
+import {
+  obtenerTodos,
+  crearUno,
+  editarUno,
+  borrarUno,
+  obtenerUno,
+  borrarTodos,
+  obtenerTodosFetch,
+  crearUnoFetch,
+  editarUnoFetch,
+  borrarUnoFetch,
+  obtenerUnoFetch,
+} from "./api.js";
 
 // ------>  Variables
 
 //Array de objetos a usar
 let listado = [];
+let listadoConFiltro = [];
 
 //Campos del form
 let elementId = document.getElementById("element-id");
@@ -15,7 +28,7 @@ let tipo = document.getElementById("tipo");
 let distancia = document.getElementById("distancia");
 let vida = document.getElementById("vida");
 let anillo = document.getElementById("anillo");
-let atmosfera = document.getElementById("atmosfera"); 
+let atmosfera = document.getElementById("atmosfera");
 
 // Botones
 const btnSubmit = document.getElementById("btnSubmit");
@@ -26,19 +39,21 @@ const btnEliminarTodos = document.getElementById("btnEliminarTodos");
 //Divs
 const spinnerContenedor = document.getElementById("spinnerContenedor");
 const tablaContenedor = document.getElementById("tabla");
+const checkMostrar = document.getElementById("checkParaMostrar");
 
 // ------>  Event Listeners
 
 window.addEventListener("DOMContentLoaded", async () => {
   // Obtener el año actual y setearlo en el footer
   const anioActual = new Date().getFullYear();
-  document.getElementById('anio').textContent = anioActual;
+  document.getElementById("anio").textContent = anioActual;
 
   mostrarSpinner();
   // listado = await obtenerTodos();
   listado = await obtenerTodosFetch();
   ocultarSpinner();
 
+  mostrarOcultarColumnas(listado[0]);
   displayTabla();
   document.addEventListener("click", onClick);
   btnEliminar.addEventListener("click", onEliminarElemento);
@@ -59,6 +74,42 @@ btnSubmit.addEventListener("keydown", (e) => {
 // ------>  Funciones
 
 //Manipulación Tabla
+
+function mostrarOcultarColumnas(lista) {
+  for (const key in lista) {
+    if (key != "id") {
+      let div = document.createElement("div");
+      let label = document.createElement("label");
+      let input = document.createElement("input");
+
+      label.textContent = key;
+      input.setAttribute("type", "checkbox");
+      input.checked = true;
+      input.addEventListener("change", onCambioInput);
+
+      label.appendChild(input);
+      div.appendChild(label);
+      checkMostrar.appendChild(div);
+    }
+  }
+  cargarListadoConFiltro();
+}
+
+function cargarListadoConFiltro() {
+  let inputs = document.querySelectorAll("#checkParaMostrar>div>label>input");
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].checked) {
+      listadoConFiltro.push(inputs[i].parentNode.textContent);
+    }
+  }
+}
+
+function onCambioInput(e) {
+  e.preventDefault();
+  listadoConFiltro = [];
+  cargarListadoConFiltro();
+  displayTabla();
+}
 
 function borrarTabla() {
   let tabla = tablaContenedor.firstChild;
@@ -89,7 +140,7 @@ function tablaCrearHeaders(lista) {
   const thead = document.createElement("thead");
   const tr = document.createElement("tr");
   for (const key in lista) {
-    if (key != "id") {
+    if (key != "id" && listadoConFiltro.includes(key)) {
       const th = document.createElement("th");
       th.textContent = key;
       tr.appendChild(th);
@@ -107,10 +158,12 @@ function tablaCrearBody(lista) {
       if (key === "id") {
         tr.setAttribute("data-id", element[key]);
       } else {
-        const td = document.createElement("td");
-        td.setAttribute("data-label", key);
-        td.textContent = element[key];
-        tr.appendChild(td);
+        if (listadoConFiltro.includes(key)) {
+          const td = document.createElement("td");
+          td.setAttribute("data-label", key);
+          td.textContent = element[key];
+          tr.appendChild(td);
+        }
       }
     }
     tbody.appendChild(tr);
@@ -187,6 +240,8 @@ async function onClick(e) {
     document
       .querySelector("section.formulario-principal")
       .scrollIntoView(false, { behavior: "smooth" });
+  } else if (e.target.matches("div#checkParaMostrar")) {
+    console.log("-----> click");
   } else if (
     !e.target.matches("input") &&
     !e.target.matches("textarea") &&
@@ -209,17 +264,19 @@ function onCancelar() {
 async function guardarElemento(e) {
   e.preventDefault();
 
-  if (nombre.value === "" ||
-      tamano.value === "" ||
-      masa.value === "" ||
-      tipo.value === "" ||
-      distancia.value === "" ||
-      atmosfera.value === ""
-      )
-      {
-        alert("El planeta debe tener un nombre, tamaño, masa, tipo, distancia al sol y composición atmosférica");
-        return;
-      }
+  if (
+    nombre.value === "" ||
+    tamano.value === "" ||
+    masa.value === "" ||
+    tipo.value === "" ||
+    distancia.value === "" ||
+    atmosfera.value === ""
+  ) {
+    alert(
+      "El planeta debe tener un nombre, tamaño, masa, tipo, distancia al sol y composición atmosférica"
+    );
+    return;
+  }
 
   if (
     nombre.value !== "" &&
@@ -274,8 +331,8 @@ function crearPlaneta() {
 async function onEliminarElemento(e) {
   if (confirm("Confirma la Eliminacion")) {
     mostrarSpinner();
-    // await borrarUno(crearPlaneta()); 
-    await borrarUnoFetch(crearPlaneta()); 
+    // await borrarUno(crearPlaneta());
+    await borrarUnoFetch(crearPlaneta());
     vaciarFormulario();
     // listado = await obtenerTodos();
     listado = await obtenerTodosFetch();
