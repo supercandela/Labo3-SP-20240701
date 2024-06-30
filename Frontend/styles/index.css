@@ -221,6 +221,15 @@ section.lista div.spinner {
   margin-bottom: 20px;
 }
 
+#promedio {
+  display: inline-block;
+  width: 70%;
+}
+
+#btnCalcular {
+  display: inline-block;
+}
+
 /* SECCION MOSTRAR OCULTAR COLUMNAS */
 #casilleros {
   background-color: #d1e8f5;

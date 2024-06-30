@@ -35,6 +35,7 @@ const btnSubmit = document.getElementById("btnSubmit");
 const btnEliminar = document.getElementById("btnEliminar");
 const btnCancelar = document.getElementById("btnCancelar");
 const btnEliminarTodos = document.getElementById("btnEliminarTodos");
+const btnCalcular = document.getElementById("btnCalcular");
 
 //Divs
 const spinnerContenedor = document.getElementById("spinnerContenedor");
@@ -66,6 +67,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 // Evento click
 btnSubmit.addEventListener("click", guardarElemento);
+btnCalcular.addEventListener("click", calcularPromedio);
 
 // Evento enter
 btnSubmit.addEventListener("keydown", (e) => {
@@ -363,3 +365,14 @@ async function onEliminarTodos(e) {
 }
 
 // Map - Reduce - Filter
+
+function calcularPromedio() {
+  const listaConFiltroParaCalcular =
+  tipoFiltro.value === ""
+    ? listado
+    : listado.filter((elemento) => elemento.tipo === tipoFiltro.value);
+
+  let sumatoria = listaConFiltroParaCalcular.reduce((a, b) => a + b.distancia_al_sol, 0);
+  let promedio = sumatoria / listaConFiltroParaCalcular.length;
+  document.getElementById("promedio").value = promedio;
+}
