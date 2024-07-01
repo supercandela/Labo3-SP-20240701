@@ -130,7 +130,7 @@ function displayTabla() {
   const listaAMostrar =
     tipoFiltro.value === ""
       ? listado
-      : listado.filter((elemento) => elemento.tipo === tipoFiltro.value);
+      : listado.filter((elemento) => elemento.tipo.toLowerCase() == tipoFiltro.value);
   const tabla = crearTabla(listaAMostrar);
   tablaContenedor.appendChild(tabla);
 }
@@ -208,7 +208,7 @@ function cargarFormulario(objeto) {
   nombre.value = objeto.nombre;
   tamano.value = objeto.tamano;
   masa.value = objeto.masa;
-  tipo.value = objeto.tipo;
+  tipo.value = objeto.tipo.toLowerCase();
   distancia.value = objeto.distancia_al_sol;
   vida.checked = objeto.presencia_de_vida;
   anillo.checked = objeto.posee_anillo;
@@ -362,7 +362,7 @@ function calcularPromedio() {
   const listaConFiltroParaCalcular =
   tipoFiltro.value === ""
     ? listado
-    : listado.filter((elemento) => elemento.tipo === tipoFiltro.value);
+    : listado.filter((elemento) => elemento.tipo.toLowerCase() === tipoFiltro.value);
 
   let sumatoria = listaConFiltroParaCalcular.reduce((a, b) => a + b.distancia_al_sol, 0);
   if (listaConFiltroParaCalcular.length != 0) {
