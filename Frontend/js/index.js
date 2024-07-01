@@ -71,7 +71,7 @@ btnSubmit.addEventListener("keydown", (e) => {
 });
 
 // Evento Change filtro
-tipoFiltro.addEventListener("change", displayTabla);
+tipoFiltro.addEventListener("change", onCambioFiltro);
 
 // ------>  Funciones
 
@@ -116,6 +116,11 @@ function onCambioInput(e) {
 function borrarTabla() {
   let tabla = tablaContenedor.firstChild;
   tablaContenedor.removeChild(tabla);
+}
+
+function onCambioFiltro() {
+  document.getElementById("promedio").value = "";
+  displayTabla();
 }
 
 function displayTabla() {
