@@ -2,15 +2,11 @@ import Planeta from "./Planeta.js";
 import {
   obtenerTodos,
   crearUno,
-  editarUno,
-  borrarUno,
   obtenerUno,
   borrarTodos,
   obtenerTodosFetch,
-  crearUnoFetch,
   editarUnoFetch,
   borrarUnoFetch,
-  obtenerUnoFetch,
 } from "./api.js";
 
 // ------>  Variables
@@ -43,7 +39,6 @@ const tablaContenedor = document.getElementById("tabla");
 const checkMostrar = document.getElementById("checkParaMostrar");
 
 const tipoFiltro = document.getElementById("tipoFiltro");
-let valorAFiltrar = tipoFiltro.value;
 
 // ------>  Event Listeners
 
@@ -53,8 +48,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("anio").textContent = anioActual;
 
   mostrarSpinner();
-  // listado = await obtenerTodos();
-  listado = await obtenerTodosFetch();
+  listado = await obtenerTodos();
   ocultarSpinner();
 
   mostrarOcultarColumnas(listado[0]);
@@ -244,8 +238,7 @@ async function onClick(e) {
   if (e.target.matches("td")) {
     let id = e.target.parentNode.dataset.id;
     mostrarSpinner();
-    // cargarFormulario(await obtenerUno(id));
-    cargarFormulario(await obtenerUnoFetch(id));
+    cargarFormulario(await obtenerUno(id));
     ocultarSpinner();
     cambiarBotones(e.target);
     document
@@ -303,14 +296,11 @@ async function guardarElemento(e) {
       if (!confirm("Confirma la modificación")) {
         return;
       }
-      // await editarUno(crearPlaneta());
       await editarUnoFetch(crearPlaneta());
     } else {
-      // await crearUno(crearPlaneta());
-      await crearUnoFetch(crearPlaneta());
+      await crearUno(crearPlaneta());
     }
     vaciarFormulario();
-    // listado = await obtenerTodos();
     listado = await obtenerTodosFetch();
     displayTabla(listado);
     ocultarSpinner();
@@ -342,10 +332,8 @@ function crearPlaneta() {
 async function onEliminarElemento(e) {
   if (confirm("Confirma la Eliminacion")) {
     mostrarSpinner();
-    // await borrarUno(crearPlaneta());
     await borrarUnoFetch(crearPlaneta());
     vaciarFormulario();
-    // listado = await obtenerTodos();
     listado = await obtenerTodosFetch();
     displayTabla(listado);
     ocultarSpinner();
@@ -357,7 +345,6 @@ async function onEliminarTodos(e) {
     mostrarSpinner();
     await borrarTodos();
     vaciarFormulario();
-    // listado = await obtenerTodos();
     listado = await obtenerTodosFetch();
     displayTabla(listado);
     ocultarSpinner();
@@ -373,6 +360,10 @@ function calcularPromedio() {
     : listado.filter((elemento) => elemento.tipo === tipoFiltro.value);
 
   let sumatoria = listaConFiltroParaCalcular.reduce((a, b) => a + b.distancia_al_sol, 0);
-  let promedio = sumatoria / listaConFiltroParaCalcular.length;
-  document.getElementById("promedio").value = promedio;
+  if (listaConFiltroParaCalcular.length != 0) {
+    let promedio = sumatoria / listaConFiltroParaCalcular.length;
+    document.getElementById("promedio").value = promedio;
+  } else {
+    document.getElementById("promedio").value = "No hay planetas seleccionados.";  
+  }
 }
